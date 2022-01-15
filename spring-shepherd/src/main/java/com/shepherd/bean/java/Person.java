@@ -1,4 +1,4 @@
-package com.shepherd.beans;
+package com.shepherd.bean.java;
 
 /**
  * @author fjzheng

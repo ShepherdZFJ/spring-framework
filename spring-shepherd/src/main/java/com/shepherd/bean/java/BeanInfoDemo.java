@@ -1,4 +1,4 @@
-package com.shepherd.beans;
+package com.shepherd.bean.java;
 
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;

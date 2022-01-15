@@ -24,4 +24,7 @@
 		<property name="targetBeanName" value="user"></property>
 	</bean>
 
+	<!-- 将 Spring 容器中 "user" Bean 关联/建立别名 - "xiaomage-user" -->
+	<alias name="user" alias="shepherd-user" />
+
 </beans>
