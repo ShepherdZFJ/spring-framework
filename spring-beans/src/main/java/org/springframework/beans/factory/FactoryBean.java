@@ -92,6 +92,7 @@ public interface FactoryBean<T> {
 	 * @throws Exception in case of creation errors
 	 * @see FactoryBeanNotInitializedException
 	 */
+	// 返回bean实例对象
 	@Nullable
 	T getObject() throws Exception;
 
@@ -114,6 +115,7 @@ public interface FactoryBean<T> {
 	 * or {@code null} if not known at the time of the call
 	 * @see ListableBeanFactory#getBeansOfType
 	 */
+	// 返回bean实例对象类型
 	@Nullable
 	Class<?> getObjectType();
 
@@ -142,6 +144,7 @@ public interface FactoryBean<T> {
 	 * @see #getObject()
 	 * @see SmartFactoryBean#isPrototype()
 	 */
+	// 返回的bean是否是单例对象
 	default boolean isSingleton() {
 		return true;
 	}

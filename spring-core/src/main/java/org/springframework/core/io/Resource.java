@@ -49,6 +49,18 @@ import org.springframework.lang.Nullable;
  * @see ByteArrayResource
  * @see InputStreamResource
  */
+
+/**
+ * spring框架的所有资源的抽象和访问接口,核心实现有{@link AbstractResource}对资源抽象的公共实现。
+ * {@link FileSystemResource} ：对 java.io.File 类型资源的封装，只要是跟 File 打交道的，基本上与 FileSystemResource 也可以打交道。
+ * 支持文件和 URL 的形式，实现 WritableResource 接口，且从 Spring Framework 5.0 开始，FileSystemResource 使用 NIO2 API进行读/写交互。
+ * {@link ByteArrayResource} ：对字节数组提供的数据的封装。如果通过 InputStream 形式访问该类型的资源，该实现会根据字节数组的数据构造一个相
+ * 应的 ByteArrayInputStream。
+ * {@link UrlResource} ：对 java.net.URL类型资源的封装。内部委派 URL 进行具体的资源操作。
+ * {@link ClassPathResource} ：class path 类型资源的实现。使用给定的 ClassLoader 或者给定的 Class 来加载资源。
+ * {@link InputStreamResource} ：将给定的 InputStream 作为一种资源的 Resource 的实现类。
+ *
+ */
 public interface Resource extends InputStreamSource {
 
 	/**
@@ -56,6 +68,7 @@ public interface Resource extends InputStreamSource {
 	 * <p>This method performs a definitive existence check, whereas the
 	 * existence of a {@code Resource} handle only guarantees a valid
 	 * descriptor handle.
+	 * 资源是否存在
 	 */
 	boolean exists();
 
@@ -69,6 +82,7 @@ public interface Resource extends InputStreamSource {
 	 * that the resource content cannot be read.
 	 * @see #getInputStream()
 	 * @see #exists()
+	 * 资源是否可读
 	 */
 	default boolean isReadable() {
 		return exists();
@@ -79,6 +93,7 @@ public interface Resource extends InputStreamSource {
 	 * If {@code true}, the InputStream cannot be read multiple times,
 	 * and must be read and closed to avoid resource leaks.
 	 * <p>Will be {@code false} for typical resource descriptors.
+	 * 资源所代表的的句柄是否被另一个stream打开了
 	 */
 	default boolean isOpen() {
 		return false;
@@ -91,6 +106,7 @@ public interface Resource extends InputStreamSource {
 	 * <p>This is conservatively {@code false} by default.
 	 * @since 5.0
 	 * @see #getFile()
+	 * 是否是文件
 	 */
 	default boolean isFile() {
 		return false;
@@ -100,6 +116,7 @@ public interface Resource extends InputStreamSource {
 	 * Return a URL handle for this resource.
 	 * @throws IOException if the resource cannot be resolved as URL,
 	 * i.e. if the resource is not available as descriptor
+	 * 返回资源的url
 	 */
 	URL getURL() throws IOException;
 
@@ -108,6 +125,7 @@ public interface Resource extends InputStreamSource {
 	 * @throws IOException if the resource cannot be resolved as URI,
 	 * i.e. if the resource is not available as descriptor
 	 * @since 2.5
+	 * 返回资源的uri
 	 */
 	URI getURI() throws IOException;
 
@@ -117,6 +135,7 @@ public interface Resource extends InputStreamSource {
 	 * absolute file path, i.e. if the resource is not available in a file system
 	 * @throws IOException in case of general resolution/reading failures
 	 * @see #getInputStream()
+	 * 返回文件
 	 */
 	File getFile() throws IOException;
 
@@ -139,6 +158,7 @@ public interface Resource extends InputStreamSource {
 	 * Determine the content length for this resource.
 	 * @throws IOException if the resource cannot be resolved
 	 * (in the file system or as some other known physical resource type)
+	 * 资料内容长度
 	 */
 	long contentLength() throws IOException;
 
@@ -146,6 +166,7 @@ public interface Resource extends InputStreamSource {
 	 * Determine the last-modified timestamp for this resource.
 	 * @throws IOException if the resource cannot be resolved
 	 * (in the file system or as some other known physical resource type)
+	 * 返回最后修改时间
 	 */
 	long lastModified() throws IOException;
 
@@ -154,6 +175,7 @@ public interface Resource extends InputStreamSource {
 	 * @param relativePath the relative path (relative to this resource)
 	 * @return the resource handle for the relative resource
 	 * @throws IOException if the relative resource cannot be determined
+	 * 根据资源的相对路径创建新资源
 	 */
 	Resource createRelative(String relativePath) throws IOException;
 
@@ -162,6 +184,7 @@ public interface Resource extends InputStreamSource {
 	 * part of the path: for example, "myfile.txt".
 	 * <p>Returns {@code null} if this type of resource does not
 	 * have a filename.
+	 * 获取资源文件名称
 	 */
 	@Nullable
 	String getFilename();
@@ -172,6 +195,7 @@ public interface Resource extends InputStreamSource {
 	 * <p>Implementations are also encouraged to return this value
 	 * from their {@code toString} method.
 	 * @see Object#toString()
+	 * 获取资源的描述
 	 */
 	String getDescription();
 
