@@ -94,15 +94,30 @@ public class XmlValidationModeDetector {
 		try {
 			boolean isDtdValidated = false;
 			String content;
+			// 循环逐行读取XML文件的内容
 			while ((content = reader.readLine()) != null) {
 				content = consumeCommentTokens(content);
+				// 跳过 如果是注释 或者这一行内容content是空的
 				if (this.inComment || !StringUtils.hasText(content)) {
 					continue;
 				}
+				//要在 Spring 中使用 DTD，需要在 Spring XML 文件头部声明：
+				//<?xml version="1.0" encoding="UTF-8"?>
+				//<!DOCTYPE beans PUBLIC  "-//SPRING//DTD BEAN//EN"  "http://www.springframework.org/dtd/spring-beans.dtd">
+				// 判读是否是包含 DOCTYPE 为DTD模式
 				if (hasDoctype(content)) {
 					isDtdValidated = true;
 					break;
 				}
+				// XSD类型的文件头部声明
+				// <?xml version="1.0" encoding="UTF-8"?>
+				// <beans xmlns="http://www.springframework.org/schema/beans"
+				//	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+				//	   xmlns:util="http://www.springframework.org/schema/util"
+				//	   xsi:schemaLocation="
+				//        http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+				//        http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd">
+				// 检验当前行是不是有 <，并且<后面跟着的是字母，则直接返回，说明是XSD模式
 				if (hasOpeningTag(content)) {
 					// End of meaningful data...
 					break;
