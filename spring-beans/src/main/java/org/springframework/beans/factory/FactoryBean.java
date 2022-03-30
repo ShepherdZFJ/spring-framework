@@ -62,6 +62,14 @@ import org.springframework.lang.Nullable;
  * @see org.springframework.aop.framework.ProxyFactoryBean
  * @see org.springframework.jndi.JndiObjectFactoryBean
  */
+
+/**
+ * FactoryBean在BeanFactory的实现中有着特殊的处理，如果一个对象实现了FactoryBean 那么通过它get出来的对象实际是
+ * factoryBean.getObject() 得到的对象，如果想得到FactoryBean必须通过在 '&' + beanName 的方式获取
+ * 而ObjectFactory则只是一个普通的对象工厂接口。
+ * 在查看AbstractBeanFactory的doGetBean(..) 部分的源码时，可以看到spring对{@link ObjectFactory}的应用之一就是，将创建对象
+ * 的步骤封装到ObjectFactory中 交给自定义的Scope来选择是否需要创建对象来灵活的实现scope
+ */
 public interface FactoryBean<T> {
 
 	/**
